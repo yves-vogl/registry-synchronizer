@@ -22,5 +22,7 @@ Run ```pip3 install -r requirements.txt```
 
 The process progess output seems to have an issue with math ;-)
 
+```
 123145754238976: Pushing 59e4d73018b3: 100.4% -30902B
 123145754238976: Pushing ba9f8a995b1e: 213.2% -2718B
+```
