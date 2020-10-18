@@ -2,3 +2,4 @@ boto3~=1.15
 termcolor~=1.1
 pyyaml~=5.1
 docker~=3.7
+hurry.filesize~=0.9

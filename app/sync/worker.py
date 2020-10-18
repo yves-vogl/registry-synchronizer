@@ -7,12 +7,12 @@ import time
 
 class Worker:
 
-  def __init__(self, concurrent_runs = 25):
+  def __init__(self, concurrent_runs = 2):
 
     self._concurrent_runs = concurrent_runs
     self._jobs = []
     self._threads = []
-    self._wait = 0.5
+    self._wait = 0
 
   def add(self, jobs):
 

@@ -56,14 +56,18 @@ class Sync():
 
           for image in result.images:
             job = Job(
-              source_registry = from_registry.url,
-              source_username = from_registry.username,
-              source_password = from_registry.password,
-              target_registry = to_registry.url,
-              target_username = to_registry.username,
-              target_password = to_registry.password,
-              source_image = f'{image.url}',
-              target_image = f'{to_registry.name}/{repository.name()}:{image.tag}'
+              source_registry   = from_registry.url,
+              source_username   = from_registry.username,
+              source_password   = from_registry.password,
+              target_registry   = to_registry.url,
+              target_username   = to_registry.username,
+              target_password   = to_registry.password,
+              source_repository = f'{from_registry.name}/{result.name()}',
+              source_image_tag  = f'{image.tag}',
+              source_image_url  = f'{image.url}',
+              target_repository = f'{to_registry.name}/{repository.name()}',
+              target_image_tag  = image.tag,
+              target_image_url  = f'{to_registry.name}/{repository.name()}:{image.tag}'
             )
             self._jobs.append(job)
 
