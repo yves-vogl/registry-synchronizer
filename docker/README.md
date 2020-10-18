@@ -15,7 +15,7 @@ $ docker run -it \
   -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
   -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
   -e AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN} \
-  registry-synchronizer:0.0.1 -m /var/maps/test.yaml
+  registry-synchronizer:0.0.1 --mapfile /var/maps/test.yaml [--concurrency = <file>]
 ```
 
 ## Debug

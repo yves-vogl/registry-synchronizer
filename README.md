@@ -7,7 +7,18 @@ Also during the phase of restructuring so that Container Repository names change
 
 *DO NOT USE THIS IN PRODUCTION AS IT'S IN EARLY ALPHA STATE*
 
-```python3 app/main.py -m maps/example.yaml```
+### Run
+
+```python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] run```
+
+### Create jobs for Redis
+
+```python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] queue```
+
+### Run the worker
+```python3 app/worker.py [--concurrency 5] run```
+
+
 
 
 ## Getting started
