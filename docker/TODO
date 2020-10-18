@@ -1,0 +1,7 @@
+Dockerize the tool and describe the different use cases:
+
+- standalone
+- distributed
+  Description:
+    1. main: Creates jobs and pushes them to a Redis instance, then exits
+    2. worker: Connects to a redis instance, fetches a job, executes it.

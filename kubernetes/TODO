@@ -1,0 +1,2 @@
+- Stateful set for Redis and the main component (which creates and publishes jobs)
+- Deployment and HPA for spawning concurrent workers (which fetch their stuff from Redis)
