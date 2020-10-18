@@ -8,6 +8,7 @@ from termcolor import colored
 from hurry.filesize import size
 import sys
 import urllib3
+import socket
 
 class Job:
   def __init__(self, **kwargs):
