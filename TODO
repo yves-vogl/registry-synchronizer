@@ -3,3 +3,25 @@
 - Releasing a package and create a binstub
 - Add Travis for testing
 - Release a containerized version on DockerHub
+
+
+Describe use cases:
+
+- Customer migrates a big repo to different ones
+- Maybe one wants to have an image replicated to more than one region, e.g.
+  build it in us-west-1 (e.g. on CircleCI) and have only traffic locally, but use it in
+  other region(s).
+  Then you either make a lot of traffic between us-west-1 and other regions or have CircleCI build
+  in the target region. Both ways make inter-regional traffic.
+  It could be cheaper to decouple this, e.g. when either using more build traffic than usage or either way around.
+
+- One would like to pull (non-ecr) images to mirror them locally and have them under control (and scanned)
+  This would lead to the idea of implementing other registries or opening up for plugins
+
+- Check if replicating is really needed or if there are other more native ways (ECR Proxy)
+- Check if we can rid of the docker client / lib an implement the protocol and if it's reasonable
+- Check if we can use other image handling tools than docker / lib or doing it with the API
+- Between ECR maybe we can use presigned URLs to avoid local copying (check for caching!)
+- When offloading the Kubernetes DIND then the cache gets thrown away. Check how this can be avoided or even the cache could be safely shared with other workers
+- When not using docker anymore make sure that caching is in place
+- Make caching optional
