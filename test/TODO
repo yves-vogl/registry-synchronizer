@@ -1,0 +1,4 @@
+- Mock API
+- Do some unit, functional, integrational and acceptance tests
+- Do some Docker tests
+- Do some tests to evaluate risk of transformations (and their mitigations)
