@@ -1,0 +1,26 @@
+sync:
+  - from:
+      registry_id: "0123456789"
+      aws_profile: default
+    to:
+      registry_id: "9876543210"
+      aws_profile: other
+    transformations:
+      # Adding a prefix
+      - prefix-{x}
+      # Adding a suffix
+      - '{x}-suffix'
+      # Converting the case to upper
+      - '{x.upper()}'
+
+  - from:
+      registry_id: "0000000000"
+      aws_profile: default
+    to:
+      registry_id: "1111111111"
+      aws_profile: other
+    transformations:
+      # Fix misspellings
+      - {"liquibase" if x == "liquidbase" else x}
+      # Do nothing
+      - {x}
