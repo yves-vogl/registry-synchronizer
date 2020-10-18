@@ -7,7 +7,7 @@ import time
 
 class Worker:
 
-  def __init__(self, concurrent_runs = 75):
+  def __init__(self, concurrent_runs = 5):
 
     self._concurrent_runs = concurrent_runs
     self._jobs = []
@@ -24,6 +24,14 @@ class Worker:
   @property
   def pending(self):
     return len(self._jobs)
+
+  @property
+  def concurrent_runs(self):
+    return self._concurrent_runs
+
+  @concurrent_runs.setter
+  def concurrent_runs(self, value):
+    self._concurrent_runs = value
 
   def run(self):
 

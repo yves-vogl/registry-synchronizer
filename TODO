@@ -1,8 +1,11 @@
+- Documentation and configuration needs some improvements
 - Do some benchmarking and try to guess the best concurrency
 - Improved error handling
 - Releasing a package and create a binstub
 - Add Travis for testing
 - Release a containerized version on DockerHub
+- Iterate on Boto3 objects for more than 1000 results
+- Support different identities
 
 
 Describe use cases:

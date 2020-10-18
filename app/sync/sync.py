@@ -11,10 +11,16 @@ class Sync():
   def __init__(self, from_registry_id, to_registry_id):
 
     self._from_registry_id = from_registry_id
-    self._to_registry_id = to_registry_id
+    self.from_aws_profile = None
+    self.from_aws_region = 'eu-central-1'
+    self.from_aws_role_arn = None
+    self.from_aws_role_session_name = None
 
-    self.from_profile_name = None
-    self.to_profile_name = None
+    self._to_registry_id = to_registry_id
+    self.to_aws_profile = None
+    self.to_aws_region = 'eu-central-1'
+    self.to_aws_role_arn = None
+    self.to_aws_role_session_name = None
 
     self._transformations = [lambda x: x]
 
@@ -24,12 +30,18 @@ class Sync():
 
     from_registry = Registry(
       self._from_registry_id,
-      profile_name=self.from_profile_name
+      profile_name = self.from_aws_profile,
+      region_name = self.from_aws_region,
+      role_arn = self.from_aws_role_arn,
+      role_session_name = self.from_aws_role_session_name
     )
 
     to_registry = Registry(
       self._to_registry_id,
-      profile_name=self.to_profile_name
+      profile_name = self.to_aws_profile,
+      region_name = self.to_aws_region,
+      role_arn = self.to_aws_role_arn,
+      role_session_name = self.to_aws_role_session_name
     )
 
     return self._compare(from_registry, to_registry)

@@ -10,7 +10,7 @@ from .repository import Repository
 
 class Registry:
 
-  def __init__(self, registry_id, profile_name="default", region_name="eu-central-1"):
+  def __init__(self, registry_id, profile_name = None, region_name = "eu-central-1", role_arn = None, role_session_name = None):
 
     self._repositories = []
     self._endpoint = None
@@ -18,9 +18,25 @@ class Registry:
     self._password = None
 
     session = boto3.session.Session(
-      region_name=region_name,
-      profile_name=profile_name
+      region_name = region_name,
+      profile_name = profile_name
     )
+
+    if role_arn != None:
+      response = session.client('sts').assume_role(
+        RoleArn = role_arn,
+        RoleSessionName = role_session_name
+          if role_session_name != None
+          else f'registry-synchronizer-{registry_id}',
+      )
+
+      session = boto3.session.Session(
+        region_name = region_name,
+        profile_name = profile_name,
+        aws_access_key_id = response['Credentials']['AccessKeyId'],
+        aws_secret_access_key = response['Credentials']['SecretAccessKey'],
+        aws_session_token = response['Credentials']['SessionToken']
+      )
 
     self._registry_id = registry_id
     self._client = session.client('ecr')
@@ -71,8 +87,8 @@ class Registry:
 
     if self._repositories == []:
       for repo in self._client.describe_repositories(
-        registryId=self._registry_id,
-        maxResults=1000
+        registryId = self._registry_id,
+        maxResults = 1000
       )['repositories']:
         repository = Repository(self, repo['repositoryName'])
         self._repositories.append(repository)
