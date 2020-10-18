@@ -73,15 +73,15 @@ class Job:
       return True
 
     except docker.errors.APIError as error:
-      self.log(print(colored(error, 'red')))
+      self.log(colored(error, 'red'))
     except OSError as error:
-      self.log(print(colored(error, 'red')))
+      self.log(colored(error, 'red'))
     except urllib3.exceptions.ReadTimeoutError as error:
-      self.log(print(colored(error, 'red')))
+      self.log(colored(error, 'red'))
     except socket.timeout as error:
-      self.log(print(colored(error, 'red')))
+      self.log(colored(error, 'red'))
     except:
-      self.log(print(colored(f'Unexpected error: {sys.exc_info()[0]})', 'red')))
+      self.log(colored(f'Unexpected error: {sys.exc_info()[0]})', 'red'))
       raise
 
     finally:

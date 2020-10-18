@@ -1,3 +1,5 @@
 - Do some benchmarking and try to guess the best concurrency
 - Improved error handling
-- Releasing a package and create a binstub 
+- Releasing a package and create a binstub
+- Add Travis for testing
+- Release a containerized version on DockerHub
