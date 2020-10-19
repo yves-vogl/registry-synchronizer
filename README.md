@@ -36,19 +36,19 @@ pip3 install -r requirements.txt
 #### Standalone
 
 ```
-python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] run
+python3 app/main.py --mapfile maps/example.yaml [--concurrency 5]
 ```
 
 #### Create jobs for Redis
 
 ```
-python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] queue
+python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] --queue
 ```
 
 #### Run the worker
 
 ```
-python3 app/worker.py [--concurrency 5] run
+python3 app/main.py [--concurrency 5] --worker
 ```
 
 ### Run from Docker

@@ -10,23 +10,31 @@ def main(argv):
 
   mapfile = None
   concurrent_runs = 5
+  command = 'run'
 
   try:
-    opts, args = getopt.getopt(argv,"hm:c:",["mapfile=", "concurrency="])
+    opts, args = getopt.getopt(argv,"hm:c:qw",["mapfile=", "concurrency=", "queue", "worker"])
   except getopt.GetoptError:
-    print('main.py -m <mapfile> [-concurrency <number>]')
+    print('main.py --mapfile <mapfile> [--concurrency <number>] [--queue | --worker]')
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print('main.py -m <mapfile> [-concurrency <number>]')
+      print('main.py --mapfile <mapfile> [--concurrency <number>] [--queue | --worker]')
       sys.exit()
     elif opt in ("-m", "--mapfile"):
       mapfile = arg
     elif opt in ("-c", "--concurrency"):
       concurrent_runs = arg
+    elif opt in ("-q", "--queue"):
+      command = 'queue'
+    elif opt in ("-w", "--worker"):
+      command = 'worker'
 
   if (value := os.getenv('CONCURRENCY')) != None:
     concurrent_runs = value
+
+  print(command)
+  exit()
 
   worker = Worker(concurrent_runs = concurrent_runs)
 

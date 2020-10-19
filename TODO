@@ -30,6 +30,10 @@ Describe use cases:
 - Make caching optional
 
 
+# Main
+
+- Use more powerful CLI interface (https://realpython.com/comparing-python-command-line-parsing-libraries-argparse-docopt-click)
+
 # Docker
 
 Dockerize the tool and describe the different use cases:
