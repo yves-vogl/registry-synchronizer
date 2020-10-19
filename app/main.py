@@ -33,8 +33,8 @@ def main(argv):
   if (value := os.getenv('CONCURRENCY')) != None:
     concurrent_runs = value
 
-  print(command)
-  exit()
+  # print(command)
+  # exit()
 
   worker = Worker(concurrent_runs = concurrent_runs)
 
