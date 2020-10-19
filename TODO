@@ -12,6 +12,7 @@
 - also make repos iterable
 - Add testing and code documentation - it's getting to complex without
 - Allow regexp and semver for include parameter
+- When specifying include, also allow to specify explicit repo pendant which gets used instead of transformations or direct match
 
 
 Describe use cases:
