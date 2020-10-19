@@ -71,6 +71,7 @@ class Job:
             f'{line["status"]}'
           )
         else:
+          # 123145559949312: {'progressDetail': {}, 'aux': {'Tag': '0.1.0.957-2f543f5', 'Digest': 'sha256:dcf595bee39bcee215db07aac082770b1f1867851ac8732a8347f9e2f344151c', 'Size': 3058}}
           self.log(
             f'{line}'
           )
