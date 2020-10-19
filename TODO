@@ -11,6 +11,7 @@
 - If no transformations are specified its a 1:1 mapping so only the included repos need to be fetched (or the ones from the source registry)
 - also make repos iterable
 - Add testing and code documentation - it's getting to complex without
+- Allow regexp and semver for include parameter
 
 
 Describe use cases:

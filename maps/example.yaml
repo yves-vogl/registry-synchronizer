@@ -16,15 +16,19 @@ sync:
       # Converting the case to upper
       - '{x.upper()}'
 
+    # Specifies the number of images which are synchronized.
+    limit: 5
+
     # If include is specified, only the repos named under repositories included
     include:
-      # Specifies the number of images which are synchronized.
-      # If include option is specified, either the limit option there takes precendence
-      # or is implicitelcy by the number of versions
-      limit: 5
       repositories:
         the-whole-repo: {}
-        docker-insure-general-claims: {}
+        ten-images-from-awesome-repo:
+          limit: 10
+        only_stable_version:
+          versions:
+            - stable
+            - 1.0.0
 
   - from:
       registry_id: "0000000000"
