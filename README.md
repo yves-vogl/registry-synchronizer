@@ -108,13 +108,3 @@ $ aws ecr get-login-password \
     --username AWS \
     --password-stdin 1234556789.dkr.ecr.eu-central-1.amazonaws.com
 ```
-
-
-# Known issues
-
-The process progess output seems to have an issue with math ;-)
-
-```
-123145754238976: Pushing 59e4d73018b3: 100.4% -30902B
-123145754238976: Pushing ba9f8a995b1e: 213.2% -2718B
-```

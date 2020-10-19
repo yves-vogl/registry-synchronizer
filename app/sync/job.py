@@ -55,8 +55,12 @@ class Job:
 
             current   = line["progressDetail"]["current"]
             total     = line["progressDetail"]["total"]
-            remaining = total - current
-            percent   = round(current / (total / 100), 1)
+
+            if (remaining := total - current) < 0:
+              remaining = 0
+
+            if (percent := round(current / (total / 100), 1)) > 100.0:
+              percent = 100
 
             self.log(
               f'{line["status"]} {line["id"]}: {percent}% {size(remaining)}'
@@ -84,6 +88,8 @@ class Job:
     except:
       self.log(colored(f'Unexpected error: {sys.exc_info()[0]})', 'red'))
       raise
+    # TODO: Do a configurable retry on socket errors, e.g. on UnixHTTPConnectionPool(host='localhost', port=None): Read timed out.
+    # This happens if you have more than 1 thread trying to push or pull from docker.
 
     finally:
       pass
