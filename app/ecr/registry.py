@@ -10,7 +10,12 @@ from .repository import Repository
 
 class Registry:
 
-  def __init__(self, registry_id, profile_name = None, region_name = "eu-central-1", role_arn = None, role_session_name = None):
+  def __init__(self,
+    registry_id,
+    profile_name = None,
+    region_name = "eu-central-1",
+    role_arn = None,
+    role_session_name = None):
 
     self._repositories = []
     self._endpoint = None

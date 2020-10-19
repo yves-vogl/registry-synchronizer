@@ -14,13 +14,12 @@ class Repository:
     self._registry = registry
     self._name = name
 
-  @property
-  def images(self):
+  def images(self, number_of_images = 1000):
 
     if self._images == []:
       for image_id in self._registry.client.list_images(
         repositoryName = self._name,
-        maxResults = 1000,
+        maxResults = number_of_images,
         filter = {'tagStatus': 'TAGGED'}
       )["imageIds"]:
         image = Image(self._registry, self, image_id["imageTag"])

@@ -9,20 +9,23 @@ from sync import Sync, Worker
 def main(argv):
 
   mapfile = None
+  number_of_images = 5
   concurrent_runs = 5
   command = 'run'
 
   try:
-    opts, args = getopt.getopt(argv,"hm:c:qw",["mapfile=", "concurrency=", "queue", "worker"])
+    opts, args = getopt.getopt(argv,"hm:n:c:",["mapfile=", "number-of-images=", "concurrency=", "queue", "worker"])
   except getopt.GetoptError:
-    print('main.py --mapfile <mapfile> [--concurrency <number>] [--queue | --worker]')
+    print('main.py -m <mapfile> [--number-of-images <number>] [-concurrency <number>] [--queue | --worker]')
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print('main.py --mapfile <mapfile> [--concurrency <number>] [--queue | --worker]')
+      print('main.py -m <mapfile> [--number-of-images <number>] [-concurrency <number>] [--queue | --worker]')
       sys.exit()
     elif opt in ("-m", "--mapfile"):
       mapfile = arg
+    elif opt in ("-n", "--number-of-images"):
+      number_of_images = int(arg)
     elif opt in ("-c", "--concurrency"):
       concurrent_runs = arg
     elif opt in ("-q", "--queue"):
@@ -46,7 +49,7 @@ def main(argv):
 
       sync = Sync(
         description['from']['registry_id'],
-        description['to']['registry_id'],
+        description['to']['registry_id']
       )
 
       for key in description['from']:
@@ -62,7 +65,7 @@ def main(argv):
         for transformation in description['transformations']
       ]
 
-      sync.run()
+      sync.run(number_of_images)
       worker.add(sync.jobs)
 
     worker.run()

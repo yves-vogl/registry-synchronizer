@@ -26,14 +26,14 @@ class Sync():
 
     self._jobs = []
 
-  def run(self):
+  def run(self, number_of_images = 5):
 
     from_registry = Registry(
       self._from_registry_id,
       profile_name = self.from_aws_profile,
       region_name = self.from_aws_region,
       role_arn = self.from_aws_role_arn,
-      role_session_name = self.from_aws_role_session_name
+      role_session_name = self.from_aws_role_session_name,
     )
 
     to_registry = Registry(
@@ -44,9 +44,9 @@ class Sync():
       role_session_name = self.to_aws_role_session_name
     )
 
-    return self._compare(from_registry, to_registry)
+    return self._compare(from_registry, to_registry, number_of_images)
 
-  def _compare(self, from_registry, to_registry):
+  def _compare(self, from_registry, to_registry, number_of_images):
 
     print(f'Sync matching repositories of {to_registry.url} ({len(to_registry.repositories)}) from {from_registry.url} ({len(from_registry.repositories)})')
 
@@ -61,12 +61,14 @@ class Sync():
 
         if result:
 
+          images = result.images(number_of_images)
+
           found[repository.name()] = {
             'name': result.name(),
-            'tags': [image.tag for image in result.images]
+            'tags': [image.tag for image in images]
           }
 
-          for image in result.images:
+          for image in images:
             job = Job(
               source_registry   = from_registry.url,
               source_username   = from_registry.username,
