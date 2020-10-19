@@ -6,7 +6,7 @@ from .image import Image
 
 class Repository:
 
-  def __init__(self, registry, name):
+  def __init__(self, registry, name, max_results = 5):
 
     self._images = []
     self._image_urls = None
@@ -20,7 +20,7 @@ class Repository:
     if self._images == []:
       for image_id in self._registry.client.list_images(
         repositoryName = self._name,
-        maxResults = 1000,
+        maxResults = max_results,
         filter = {'tagStatus': 'TAGGED'}
       )["imageIds"]:
         image = Image(self._registry, self, image_id["imageTag"])

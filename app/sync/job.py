@@ -66,9 +66,13 @@ class Job:
             self.log(
               f'{line["status"]} {line["id"]}'
             )
-        else:
+        elif 'status' in line:
           self.log(
             f'{line["status"]}'
+          )
+        else:
+          self.log(
+            f'{line}'
           )
 
       return True

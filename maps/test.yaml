@@ -1,0 +1,14 @@
+sync:
+  - from:
+      registry_id: "397792270268"
+
+    to:
+      registry_id: "408654637428"
+      aws_role_arn: arn:aws:iam::408654637428:role/OrganizationAccountAccessRole
+      aws_role_session_name: "my-session-id"
+
+    transformations:
+      - docker-{x}-microservice
+      - docker-camunda-{x}
+      - docker-bipro-{x}
+      - docker-{x}
