@@ -27,7 +27,7 @@ def main(argv):
     elif opt in ("-n", "--number-of-images"):
       number_of_images = int(arg)
     elif opt in ("-c", "--concurrency"):
-      concurrent_runs = arg
+      concurrent_runs = int(arg)
     elif opt in ("-q", "--queue"):
       command = 'queue'
     elif opt in ("-w", "--worker"):
