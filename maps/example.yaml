@@ -1,9 +1,12 @@
 sync:
   - from:
       registry_id: "0123456789"
-      aws_profile: default
+      # Switch to a role
+      aws_role_arn: arn:aws:iam::0123456789:role/OrganizationAccountAccessRole
+
     to:
       registry_id: "9876543210"
+      # Use an existing profile instead of given credentials
       aws_profile: other
     transformations:
       # Adding a prefix

@@ -28,3 +28,37 @@ Describe use cases:
 - When offloading the Kubernetes DIND then the cache gets thrown away. Check how this can be avoided or even the cache could be safely shared with other workers
 - When not using docker anymore make sure that caching is in place
 - Make caching optional
+
+
+# Docker
+
+Dockerize the tool and describe the different use cases:
+
+- standalone
+- distributed
+  Description:
+    1. main: Creates jobs and pushes them to a Redis instance, then exits
+    2. worker: Connects to a redis instance, fetches a job, executes it.
+
+
+Notes:
+
+Implement automates build, test, tag (release)
+
+
+
+# Kubernetes
+
+- Stateful set for Redis and the main component (which creates and publishes jobs)
+- Deployment and HPA for spawning concurrent workers (which fetch their stuff from Redis)
+
+Either everything is run like job,
+
+
+A (Cron)Job:
+- so python3 app/main.py --mapfile maps/example.yaml [--concurrency 5] queue is run once
+
+A deployment:
+- workers start, work and wait if nothing is available to do
+
+HPA takes care of scaling the deployment.
