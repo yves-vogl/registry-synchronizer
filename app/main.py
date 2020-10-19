@@ -9,23 +9,22 @@ from sync import Sync, Worker
 def main(argv):
 
   mapfile = None
-  number_of_images = 5
   concurrent_runs = 5
   command = 'run'
 
+  usage = 'main.py -m <mapfile> [-concurrency <number>] [--queue | --worker]'
+
   try:
-    opts, args = getopt.getopt(argv,"hm:n:c:",["mapfile=", "number-of-images=", "concurrency=", "queue", "worker"])
+    opts, args = getopt.getopt(argv,"hm:c:",["mapfile=", "concurrency=", "queue", "worker"])
   except getopt.GetoptError:
-    print('main.py -m <mapfile> [--number-of-images <number>] [-concurrency <number>] [--queue | --worker]')
+    print(usage)
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print('main.py -m <mapfile> [--number-of-images <number>] [-concurrency <number>] [--queue | --worker]')
+      print(usage)
       sys.exit()
     elif opt in ("-m", "--mapfile"):
       mapfile = arg
-    elif opt in ("-n", "--number-of-images"):
-      number_of_images = int(arg)
     elif opt in ("-c", "--concurrency"):
       concurrent_runs = int(arg)
     elif opt in ("-q", "--queue"):
@@ -65,7 +64,17 @@ def main(argv):
         for transformation in description['transformations']
       ]
 
-      sync.run(number_of_images)
+      if 'limit' in description :
+        number_of_images = description['limit']
+      else:
+        number_of_images = None
+
+      if 'include' in description:
+        repositories = description['include']['repositories']
+      else:
+        repositories = None
+
+      sync.run(number_of_images = number_of_images, repositories = repositories)
       worker.add(sync.jobs)
 
     worker.run()

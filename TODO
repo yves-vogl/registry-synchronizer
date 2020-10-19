@@ -6,6 +6,11 @@
 - Release a containerized version on DockerHub
 - Iterate on Boto3 objects for more than 1000 results
 - Support different identities
+- Handle image tag immutability on target
+- if explicit exclude is given only the repos in the include string needs to be fetched from remote
+- If no transformations are specified its a 1:1 mapping so only the included repos need to be fetched (or the ones from the source registry)
+- also make repos iterable
+- Add testing and code documentation - it's getting to complex without
 
 
 Describe use cases:
@@ -20,6 +25,9 @@ Describe use cases:
 
 - One would like to pull (non-ecr) images to mirror them locally and have them under control (and scanned)
   This would lead to the idea of implementing other registries or opening up for plugins
+
+
+- With a combination of include and a true-evaluating transformation you can populate 1:n repos for bootstrapping / scaffolding purposes
 
 - Check if replicating is really needed or if there are other more native ways (ECR Proxy)
 - Check if we can rid of the docker client / lib an implement the protocol and if it's reasonable

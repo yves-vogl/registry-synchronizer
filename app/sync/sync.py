@@ -26,7 +26,7 @@ class Sync():
 
     self._jobs = []
 
-  def run(self, number_of_images = 5):
+  def run(self, number_of_images = None, repositories = None):
 
     from_registry = Registry(
       self._from_registry_id,
@@ -44,27 +44,50 @@ class Sync():
       role_session_name = self.to_aws_role_session_name
     )
 
-    return self._compare(from_registry, to_registry, number_of_images)
+    return self._compare(from_registry, to_registry, number_of_images = number_of_images, repositories = repositories)
 
-  def _compare(self, from_registry, to_registry, number_of_images):
+  def _compare(self, from_registry, to_registry, number_of_images = None, repositories = None):
 
-    print(f'Sync matching repositories of {to_registry.url} ({len(to_registry.repositories)}) from {from_registry.url} ({len(from_registry.repositories)})')
+    if repositories != None:
+      print(f'Sync selected repositories of {to_registry.url} ({len(to_registry.repositories)}) with {from_registry.url} ({len(from_registry.repositories)})')
+      print(colored(f'Selected: {", ".join(repositories.keys())}', 'blue'))
+    else:
+      print(f'Sync all matching repositories of {to_registry.url} ({len(to_registry.repositories)}) with {from_registry.url} ({len(from_registry.repositories)})')
 
     found = {}
+    skipped = []
+    not_found = []
 
     for repository in to_registry.repositories:
 
       for transformation in self.transformations:
-        result = from_registry.includes(repository, ignore_namespace = True, transformation = transformation)
 
-        found[repository.name()] = result
+        result = from_registry.includes(
+          repository,
+          ignore_namespace = True,
+          transformation = transformation,
+          repositories = repositories.keys() if repositories != None else None
+        )
 
         if result:
 
-          images = result.images(number_of_images)
+          repository_spec = None
+
+          if repositories != None:
+            repository_spec = repositories[result.name(ignore_namespace = True)]
+
+            if 'limit' in repository_spec:
+              number_of_images = repository_spec['limit']
+
+            if 'versions' in repository_spec:
+              number_of_images = len(repository_spec['versions'])
+              versions = repository_spec['versions']
+
+          images = result.images(number_of_images = number_of_images)
 
           found[repository.name()] = {
             'name': result.name(),
+            'name_without_namespace': result.name(ignore_namespace = True),
             'tags': [image.tag for image in images]
           }
 
@@ -88,19 +111,38 @@ class Sync():
 
           break
 
-    for repo, result in found.items():
+      if result == None:
+        if repositories == None:
+          not_found.append(repository.name())
+        else:
+          skipped.append(repository.name())
 
-      if result != None:
-        print(
-          colored(f'{repo}', 'green'),
-          f'is found as',
-          colored(f'{result["name"]}.', 'yellow')
-        )
-      else:
-        print(
-          colored(f'{repo}.', 'red'),
-          'not found.'
-        )
+
+    # Check if the included repos have been found
+    if repositories != None:
+      for repository in repositories:
+         if repository not in [value["name_without_namespace"] for key, value in found.items()]:
+           not_found.append(repository)
+
+
+    for repo, result in found.items():
+      print(
+        colored(f'{repo}', 'green'),
+        f'is found as',
+        colored(f'{result["name"]}.', 'yellow')
+      )
+
+    for repo in skipped:
+      print(
+        colored(f'{repo}.', 'blue'),
+        'skipped.'
+      )
+
+    for repo in not_found:
+      print(
+        colored(f'{repo}.', 'red'),
+        'not found.'
+      )
 
     return found
 

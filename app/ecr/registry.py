@@ -58,7 +58,8 @@ class Registry:
       authorization_token['authorizationToken']
     ).decode().split(':')
 
-  def includes(self, repository, ignore_namespace = False, transformation = None):
+  # FIXME: This method should be mixed in as its not specfic to ECR
+  def includes(self, repository, ignore_namespace = False, transformation = None, repositories = None):
 
     repository_names = self.repository_names(ignore_namespace)
 
@@ -67,9 +68,18 @@ class Registry:
       a = transformation(repository.name(ignore_namespace)) if transformation != None else repository.name(ignore_namespace)
       b = repository_name
 
-      #print(f'{a} -> {b}')
       if a == b:
-        return next((repo for repo in self.repositories if repo.name(ignore_namespace) == repository_name), None)
+        matched_repository = next((repo for repo in self.repositories if repo.name(ignore_namespace) == repository_name), None)
+
+        if matched_repository != None and repositories != None:
+
+          if matched_repository.name(ignore_namespace = True) in repositories:
+            return matched_repository
+          else:
+            return None
+        else:
+          return matched_repository
+
 
   @property
   def url(self):
@@ -90,6 +100,7 @@ class Registry:
   @property
   def repositories(self):
 
+    # FIXME: Make iterable
     if self._repositories == []:
       for repo in self._client.describe_repositories(
         registryId = self._registry_id,
