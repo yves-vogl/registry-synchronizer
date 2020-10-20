@@ -83,10 +83,11 @@ class Sync():
                             number_of_images = repository_spec['limit']
 
                         if 'versions' in repository_spec:
-                            number_of_images = len(repository_spec['versions'])
                             versions = repository_spec['versions']
+                        else:
+                            versions = None
 
-                    images = result.images(number_of_images=number_of_images)
+                    images = result.images(number_of_images=number_of_images, versions=versions)
 
                     found[repository.name()] = {
                         'name': result.name(),

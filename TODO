@@ -15,6 +15,7 @@
 - When specifying include, also allow to specify explicit repo pendant which gets used instead of transformations or direct match
 - Add version string to app which corresponds with git tag
 - Implement queue pattern as the current approach waits for 10 completed objects (and not for free slots)
+- If container has more than one tag, migrate all tags
 
 
 Describe use cases:

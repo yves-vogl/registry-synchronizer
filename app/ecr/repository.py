@@ -19,37 +19,58 @@ class Repository:
 
         name = self.name(ignore_namespace=True)
 
-        if versions is not None and name in versions:
-            version_spec = versions[name]
-
         if number_of_images is None or number_of_images > 1000:
             max_results = 1000
         else:
             max_results = number_of_images
 
+
+
         if not self._images:
 
-            response = self._registry.client.list_images(
-                repositoryName=self._name,
-                maxResults=max_results,
-                filter={'tagStatus': 'TAGGED'}
-            )
+            if versions is not None:
 
-            self._images += self._process_response(response)
+              response = self._registry.client.list_images(
+                  repositoryName=self._name,
+                  maxResults=max_results,
+                  filter={'tagStatus': 'TAGGED'}
+              )
 
-            if number_of_images is None or number_of_images > max_results:
+              self._images += self._process_response(response)
 
-                while 'nextToken' in response:
-                    print(f'Getting another {max_results}, next {response["nextToken"]}')
+              if number_of_images is None or number_of_images > max_results:
 
-                    response = self._registry.client.list_images(
-                        repositoryName=self._name,
-                        maxResults=max_results,
-                        nextToken=response['nextToken'],
-                        filter={'tagStatus': 'TAGGED'}
-                    )
+                  while 'nextToken' in response:
+                      print(f'Getting another {max_results}, next {response["nextToken"]}')
 
-                    self._images += self._process_response(response)
+                      response = self._registry.client.list_images(
+                          repositoryName=self._name,
+                          maxResults=max_results,
+                          nextToken=response['nextToken'],
+                          filter={'tagStatus': 'TAGGED'}
+                      )
+
+                      self._images += self._process_response(response)
+            else:
+
+              response = self._registry.client.batch_get_image(
+                  repositoryName=self._name,
+                  imageIds=[{'imageTag': tag} for tag in versions],
+                  acceptedMediaTypes=[
+                      'string',
+                  ]
+              )
+
+              self._images += self._process_response({
+                "imagesIds": [
+                  {'imageTag' : image['imageId']['imageTag']} for image in response['images']
+                ]
+              })
+
+              # TODO: Improve 
+              if len((failures := response['failures'])) > 0:
+                print(failures)
+
 
         return self._images
 
