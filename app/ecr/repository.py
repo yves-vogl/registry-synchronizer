@@ -28,7 +28,7 @@ class Repository:
 
         if not self._images:
 
-            if versions is not None:
+            if versions is None:
 
               response = self._registry.client.list_images(
                   repositoryName=self._name,
@@ -53,21 +53,23 @@ class Repository:
                       self._images += self._process_response(response)
             else:
 
+              image_ids = [{'imageTag': tag} for tag in versions]
+
               response = self._registry.client.batch_get_image(
                   repositoryName=self._name,
-                  imageIds=[{'imageTag': tag} for tag in versions],
+                  imageIds=image_ids,
                   acceptedMediaTypes=[
                       'string',
                   ]
               )
 
               self._images += self._process_response({
-                "imagesIds": [
+                "imageIds": [
                   {'imageTag' : image['imageId']['imageTag']} for image in response['images']
                 ]
               })
 
-              # TODO: Improve 
+              # TODO: Improve
               if len((failures := response['failures'])) > 0:
                 print(failures)
 
@@ -75,6 +77,7 @@ class Repository:
         return self._images
 
     def _process_response(self, response):
+
         images = []
         for image_id in response["imageIds"]:
             image = Image(self._registry, self, image_id["imageTag"])

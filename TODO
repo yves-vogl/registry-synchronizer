@@ -16,6 +16,7 @@
 - Add version string to app which corresponds with git tag
 - Implement queue pattern as the current approach waits for 10 completed objects (and not for free slots)
 - If container has more than one tag, migrate all tags
+- Create logic to transform tags (e.g. to remove certain suffixes)
 
 
 Describe use cases:
